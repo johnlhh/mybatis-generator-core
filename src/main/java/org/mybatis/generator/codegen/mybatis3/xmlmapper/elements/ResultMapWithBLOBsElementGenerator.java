@@ -58,7 +58,7 @@ public class ResultMapWithBLOBsElementGenerator extends
                 introspectedTable.getBaseResultMapId()));
         }
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         if (introspectedTable.isConstructorBased()) {
             addResultMapConstructorElements(answer);

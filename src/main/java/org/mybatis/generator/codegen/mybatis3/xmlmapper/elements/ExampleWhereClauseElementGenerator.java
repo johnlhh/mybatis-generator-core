@@ -50,7 +50,7 @@ public class ExampleWhereClauseElementGenerator extends
                     "id", introspectedTable.getExampleWhereClauseId())); //$NON-NLS-1$
         }
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         XmlElement whereElement = new XmlElement("where"); //$NON-NLS-1$
         answer.addElement(whereElement);

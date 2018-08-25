@@ -38,6 +38,7 @@ public class DeleteByPrimaryKeyElementGenerator extends
 
     @Override
     public void addElements(XmlElement parentElement) {
+        addComment(parentElement);
         XmlElement answer = new XmlElement("delete"); //$NON-NLS-1$
 
         answer.addAttribute(new Attribute(
@@ -58,7 +59,7 @@ public class DeleteByPrimaryKeyElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterClass));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         sb.append("delete from "); //$NON-NLS-1$
@@ -89,5 +90,14 @@ public class DeleteByPrimaryKeyElementGenerator extends
                         introspectedTable)) {
             parentElement.addElement(answer);
         }
+    }
+
+    private void addComment(XmlElement parentElement) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!--")
+                .append("通过主键删除")
+                .append(introspectedTable.getRemarks())
+                .append("--> ");
+        parentElement.addElement(new TextElement(sb.toString()));
     }
 }

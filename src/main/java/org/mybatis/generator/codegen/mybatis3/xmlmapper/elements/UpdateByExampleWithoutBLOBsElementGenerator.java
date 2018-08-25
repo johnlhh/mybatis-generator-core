@@ -45,7 +45,7 @@ public class UpdateByExampleWithoutBLOBsElementGenerator extends
 
         answer.addAttribute(new Attribute("parameterType", "map")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         sb.append("update "); //$NON-NLS-1$

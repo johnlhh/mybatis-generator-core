@@ -37,6 +37,7 @@ public class SelectByPrimaryKeyElementGenerator extends
 
     @Override
     public void addElements(XmlElement parentElement) {
+        addComment(parentElement);
         XmlElement answer = new XmlElement("select"); //$NON-NLS-1$
 
         answer.addAttribute(new Attribute(
@@ -66,7 +67,7 @@ public class SelectByPrimaryKeyElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         sb.append("select "); //$NON-NLS-1$
@@ -114,5 +115,14 @@ public class SelectByPrimaryKeyElementGenerator extends
                         introspectedTable)) {
             parentElement.addElement(answer);
         }
+    }
+
+    private void addComment(XmlElement parentElement){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!--")
+                .append("通过主键查询")
+                .append(introspectedTable.getRemarks())
+                .append("--> ");
+        parentElement.addElement(new TextElement(sb.toString()));
     }
 }

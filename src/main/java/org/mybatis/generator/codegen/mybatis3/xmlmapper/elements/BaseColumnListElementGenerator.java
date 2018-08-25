@@ -41,7 +41,8 @@ public class BaseColumnListElementGenerator extends AbstractXmlElementGenerator 
         answer.addAttribute(new Attribute("id", //$NON-NLS-1$
                 introspectedTable.getBaseColumnListId()));
 
-        context.getCommentGenerator().addComment(answer);
+        addComment(parentElement);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         Iterator<IntrospectedColumn> iter = introspectedTable
@@ -68,5 +69,14 @@ public class BaseColumnListElementGenerator extends AbstractXmlElementGenerator 
                 answer, introspectedTable)) {
             parentElement.addElement(answer);
         }
+    }
+
+    private void addComment(XmlElement parentElement){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!--")
+                .append(introspectedTable.getRemarks()).append(" ")
+                .append("基础列名")
+                .append("--> ");
+        parentElement.addElement(new TextElement(sb.toString()));
     }
 }

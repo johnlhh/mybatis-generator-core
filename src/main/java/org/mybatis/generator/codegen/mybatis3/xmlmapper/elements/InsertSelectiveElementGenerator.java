@@ -48,7 +48,7 @@ public class InsertSelectiveElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType.getFullyQualifiedName()));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         GeneratedKey gk = introspectedTable.getGeneratedKey();
         if (gk != null) {

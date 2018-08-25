@@ -59,7 +59,7 @@ public class SimpleSelectByPrimaryKeyElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         sb.append("select "); //$NON-NLS-1$

@@ -24,9 +24,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringContainsSp
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,6 +93,22 @@ public class DatabaseIntrospector {
         this.javaTypeResolver = javaTypeResolver;
         this.warnings = warnings;
         logger = LogFactory.getLog(getClass());
+    }
+
+    private String getCommentByTableName(String schema,String tableName){
+        try {
+            Connection conn = databaseMetaData.getConnection();
+            String sql = "Select TABLE_COMMENT from INFORMATION_SCHEMA.TABLES Where  table_name ='"+tableName+"'";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs != null && rs.next()) {
+               return rs.getString(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**
@@ -241,7 +255,8 @@ public class DatabaseIntrospector {
         Iterator<IntrospectedTable> iter = introspectedTables.iterator();
         while (iter.hasNext()) {
             IntrospectedTable introspectedTable = iter.next();
-
+            String remarks = getCommentByTableName(tc.getCatalog(),tc.getTableName());
+            introspectedTable.setRemarks(remarks);
             if (!introspectedTable.hasAnyColumns()) {
                 // add warning that the table has no columns, remove from the
                 // list
@@ -265,6 +280,8 @@ public class DatabaseIntrospector {
                         introspectedTable.getFullyQualifiedTable());
             }
         }
+
+
 
         return introspectedTables;
     }
@@ -513,6 +530,8 @@ public class DatabaseIntrospector {
             }
         }
     }
+
+
 
     /**
      * This method returns a Map<ActualTableName, List<ColumnDefinitions>> of columns returned from the database

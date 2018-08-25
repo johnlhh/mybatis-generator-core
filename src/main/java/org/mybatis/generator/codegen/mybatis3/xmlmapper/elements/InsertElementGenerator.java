@@ -16,7 +16,9 @@
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
@@ -41,8 +43,17 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
         this.isSimple = isSimple;
     }
 
+    public static Set<String> excludeColumns = new HashSet();
+
+    static {
+        excludeColumns.add("id");
+        excludeColumns.add("timeCreated");
+        excludeColumns.add("timeModified");
+    }
+
     @Override
     public void addElements(XmlElement parentElement) {
+        addComment(parentElement);
         XmlElement answer = new XmlElement("insert"); //$NON-NLS-1$
 
         answer.addAttribute(new Attribute(
@@ -60,10 +71,10 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType.getFullyQualifiedName()));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         GeneratedKey gk = introspectedTable.getGeneratedKey();
-        if (gk != null) {
+        /*if (gk != null) {
             IntrospectedColumn introspectedColumn = introspectedTable
                     .getColumn(gk.getColumn());
             // if the column is null, then it's a configuration error. The
@@ -78,7 +89,12 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
                     answer.addElement(getSelectKey(introspectedColumn, gk));
                 }
             }
-        }
+        }*/
+
+        answer.addAttribute(new Attribute(
+                "useGeneratedKeys", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+        answer.addAttribute(new Attribute(
+                "keyProperty", introspectedTable.getColumn(gk.getColumn()).getJavaProperty())); //$NON-NLS-1$
 
         StringBuilder insertClause = new StringBuilder();
         StringBuilder valuesClause = new StringBuilder();
@@ -98,8 +114,18 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
                 // cannot set values on identity fields
                 continue;
             }
+            if(!excludeColumns.contains(introspectedColumn.getActualColumnName())){
+                insertClause.append(introspectedColumn.getActualColumnName());
+                valuesClause.append("#{").append(introspectedColumn.getJavaProperty()).append("}");
+                if (i + 1 < columns.size()) {
+                    if (!columns.get(i + 1).isIdentity()) {
+                        insertClause.append(", "); //$NON-NLS-1$
+                        valuesClause.append(", "); //$NON-NLS-1$
+                    }
+                }
+            }
 
-            insertClause.append(MyBatis3FormattingUtilities
+            /*insertClause.append(MyBatis3FormattingUtilities
                     .getEscapedColumnName(introspectedColumn));
             valuesClause.append(MyBatis3FormattingUtilities
                     .getParameterClause(introspectedColumn));
@@ -108,7 +134,7 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
                     insertClause.append(", "); //$NON-NLS-1$
                     valuesClause.append(", "); //$NON-NLS-1$
                 }
-            }
+            }*/
 
             if (valuesClause.length() > 80) {
                 answer.addElement(new TextElement(insertClause.toString()));
@@ -135,5 +161,14 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
                 introspectedTable)) {
             parentElement.addElement(answer);
         }
+    }
+
+    private void addComment(XmlElement parentElement){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!--")
+                .append("新增")
+                .append(introspectedTable.getRemarks())
+                .append("--> ");
+        parentElement.addElement(new TextElement(sb.toString()));
     }
 }

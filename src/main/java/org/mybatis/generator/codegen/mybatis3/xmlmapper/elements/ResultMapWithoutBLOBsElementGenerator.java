@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
+import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
@@ -41,6 +42,7 @@ public class ResultMapWithoutBLOBsElementGenerator extends
 
     @Override
     public void addElements(XmlElement parentElement) {
+        addComment(parentElement);
         XmlElement answer = new XmlElement("resultMap"); //$NON-NLS-1$
         answer.addAttribute(new Attribute("id", //$NON-NLS-1$
                 introspectedTable.getBaseResultMapId()));
@@ -59,7 +61,7 @@ public class ResultMapWithoutBLOBsElementGenerator extends
         answer.addAttribute(new Attribute("type", //$NON-NLS-1$
                 returnType));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         if (introspectedTable.isConstructorBased()) {
             addResultMapConstructorElements(answer);
@@ -171,5 +173,13 @@ public class ResultMapWithoutBLOBsElementGenerator extends
         }
 
         answer.addElement(constructor);
+    }
+
+    private void addComment(XmlElement parentElement){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!--")
+                .append("表字段映射")
+                .append("--> ");
+        parentElement.addElement(new TextElement(sb.toString()));
     }
 }

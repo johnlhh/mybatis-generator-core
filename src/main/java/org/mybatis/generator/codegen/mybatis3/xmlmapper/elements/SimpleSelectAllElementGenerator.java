@@ -46,7 +46,7 @@ public class SimpleSelectAllElementGenerator extends
         answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
                 introspectedTable.getBaseResultMapId()));
 
-        context.getCommentGenerator().addComment(answer);
+        context.getCommentGenerator().addComment(parentElement);
 
         StringBuilder sb = new StringBuilder();
         sb.append("select "); //$NON-NLS-1$

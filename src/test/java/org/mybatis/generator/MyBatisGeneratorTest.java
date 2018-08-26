@@ -63,7 +63,7 @@ public class MyBatisGeneratorTest {
         }
     }
 
-    @Test(expected=InvalidConfigurationException.class)
+    @Test
     public void testGenerate() throws Exception {
         List<String> warnings = new ArrayList<String>();
         ConfigurationParser cp = new ConfigurationParser(warnings);

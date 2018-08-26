@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smartzhe.dao.BlogMapper">
+  <!--表字段映射--> 
+  <resultMap id="BaseResultMap" type="com.smartzhe.entity.Blog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="articleEditType" jdbcType="TINYINT" property="articleEditType" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="privateType" jdbcType="TINYINT" property="privateType" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
+    <result column="categories" jdbcType="VARCHAR" property="categories" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="timeCreate" jdbcType="TIMESTAMP" property="timeCreate" />
+    <result column="timeUpdate" jdbcType="TIMESTAMP" property="timeUpdate" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.smartzhe.entity.Blog">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="markdownContent" jdbcType="LONGVARCHAR" property="markdownContent" />
+  </resultMap>
+  <!-- 基础列名--> 
+  <sql id="Base_Column_List">
+    id, title, articleEditType, description, privateType, tags, categories, type, status, 
+    timeCreate, timeUpdate, channel
+  </sql>
+  <!--查询条件语句--> 
+  <sql id="Map_Where_Clause">
+    <where>
+      <if test="id != null">
+         and id = #{id}
+      </if>
+      <if test="title != null">
+         and title = #{title}
+      </if>
+      <if test="articleEditType != null">
+         and articleEditType = #{articleEditType}
+      </if>
+      <if test="description != null">
+         and description = #{description}
+      </if>
+      <if test="privateType != null">
+         and privateType = #{privateType}
+      </if>
+      <if test="tags != null">
+         and tags = #{tags}
+      </if>
+      <if test="categories != null">
+         and categories = #{categories}
+      </if>
+      <if test="type != null">
+         and type = #{type}
+      </if>
+      <if test="status != null">
+         and status = #{status}
+      </if>
+      <if test="timeCreate != null">
+         and timeCreate = #{timeCreate}
+      </if>
+      <if test="timeUpdate != null">
+         and timeUpdate = #{timeUpdate}
+      </if>
+      <if test="channel != null">
+         and channel = #{channel}
+      </if>
+    </where>
+  </sql>
+  <!--统计查询个数--> 
+  <select id="countByMap" parameterType="map" resultType="Integer">
+    select count(*) 
+    from Blog
+    <include refid="Map_Where_Clause" />
+  </select>
+  <!--分页查询--> 
+  <select id="findByMap" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Blog
+    <include refid="Map_Where_Clause" />
+    <if test="offSet != null and rowsPerPage != null">
+       limit #{offSet} , #{rowsPerPage}
+    </if>
+  </select>
+  <sql id="Blob_Column_List">
+    content, markdownContent
+  </sql>
+  <!--通过主键查询--> 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from Blog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--通过主键删除--> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Blog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!--新增--> 
+  <insert id="insert" keyProperty="id" parameterType="com.smartzhe.entity.Blog" useGeneratedKeys="true">
+    insert into Blog (title, articleEditType, description, privateType, tags, categories, 
+      type, status, timeCreate, timeUpdate, channel, content, markdownContent
+      )
+    values (#{title}, #{articleEditType}, #{description}, #{privateType}, #{tags}, #{categories}, 
+      #{type}, #{status}, #{timeCreate}, #{timeUpdate}, #{channel}, #{content}, #{markdownContent}
+      )
+  </insert>
+  <!--通过主键选择性修改--> 
+  <update id="updateByPrimaryKeySelective" parameterType="com.smartzhe.entity.Blog">
+    update Blog
+    <set>
+      <if test="title != null">
+        title = title,
+      </if>
+      <if test="articleEditType != null">
+        articleEditType = articleEditType,
+      </if>
+      <if test="description != null">
+        description = description,
+      </if>
+      <if test="privateType != null">
+        privateType = privateType,
+      </if>
+      <if test="tags != null">
+        tags = tags,
+      </if>
+      <if test="categories != null">
+        categories = categories,
+      </if>
+      <if test="type != null">
+        type = type,
+      </if>
+      <if test="status != null">
+        status = status,
+      </if>
+      <if test="timeCreate != null">
+        timeCreate = timeCreate,
+      </if>
+      <if test="timeUpdate != null">
+        timeUpdate = timeUpdate,
+      </if>
+      <if test="channel != null">
+        channel = channel,
+      </if>
+      <if test="content != null">
+        content = content,
+      </if>
+      <if test="markdownContent != null">
+        markdownContent = markdownContent,
+      </if>
+    </set>
+    where id =  #{id}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.smartzhe.entity.Blog">
+    update Blog
+    set title = #{title,jdbcType=VARCHAR},
+      articleEditType = #{articleEditType,jdbcType=TINYINT},
+      description = #{description,jdbcType=VARCHAR},
+      privateType = #{privateType,jdbcType=TINYINT},
+      tags = #{tags,jdbcType=VARCHAR},
+      categories = #{categories,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      timeCreate = #{timeCreate,jdbcType=TIMESTAMP},
+      timeUpdate = #{timeUpdate,jdbcType=TIMESTAMP},
+      channel = #{channel,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR},
+      markdownContent = #{markdownContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

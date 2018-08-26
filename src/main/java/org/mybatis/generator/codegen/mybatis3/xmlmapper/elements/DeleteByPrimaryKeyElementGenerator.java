@@ -79,9 +79,10 @@ public class DeleteByPrimaryKeyElementGenerator extends
 
             sb.append(MyBatis3FormattingUtilities
                     .getEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
+            sb.append(" = ")
+                    .append("#{")
+            .append(introspectedColumn.getJavaProperty())
+                    .append("}");
             answer.addElement(new TextElement(sb.toString()));
         }
 

@@ -104,9 +104,10 @@ public class SelectByPrimaryKeyElementGenerator extends
 
             sb.append(MyBatis3FormattingUtilities
                     .getAliasedEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
+            sb.append(" = ")
+                    .append("#{")
+                    .append(introspectedColumn.getJavaProperty())
+                    .append("}");
             answer.addElement(new TextElement(sb.toString()));
         }
 

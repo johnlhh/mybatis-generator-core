@@ -143,3 +143,311 @@ mvn clean install
 ```
 
 最后maven项目刷新一下，加载插件，然后运行mybatis-generator插件
+
+```
+假定Account表的建表语句为：
+
+CREATE TABLE `test`.`Account` (
+	`id` int(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(50) NOT NULL COMMENT '姓名',
+	`email` varchar(200) NOT NULL COMMENT '邮箱',
+	`mobile` varchar(20) NOT NULL,
+	`password` varchar(100) NOT NULL,
+	`timeCreate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`timeUpdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`lastLoginTime` datetime DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `unique_name` USING BTREE (`name`) comment '',
+	INDEX `unique_email` USING BTREE (`email`) comment '',
+	INDEX `unique_mobile` USING BTREE (`mobile`) comment ''
+) ENGINE=`InnoDB` AUTO_INCREMENT=1 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ROW_FORMAT=DYNAMIC COMMENT='账户' CHECKSUM=0 DELAY_KEY_WRITE=0;
+
+生成的实体类为：
+
+import java.util.Date;
+
+public class Account {
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : id
+     */
+    private Integer id;
+
+    /**
+     * 姓名
+     * 表 : Account
+     * 对应字段 : name
+     */
+    private String name;
+
+    /**
+     * 邮箱
+     * 表 : Account
+     * 对应字段 : email
+     */
+    private String email;
+
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : mobile
+     */
+    private String mobile;
+
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : password
+     */
+    private String password;
+
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : timeCreate
+     */
+    private Date timeCreate;
+
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : timeUpdate
+     */
+    private Date timeUpdate;
+
+    /**
+     * 
+     * 表 : Account
+     * 对应字段 : lastLoginTime
+     */
+    private Date lastLoginTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getTimeCreate() {
+        return timeCreate;
+    }
+
+    public void setTimeCreate(Date timeCreate) {
+        this.timeCreate = timeCreate;
+    }
+
+    public Date getTimeUpdate() {
+        return timeUpdate;
+    }
+
+    public void setTimeUpdate(Date timeUpdate) {
+        this.timeUpdate = timeUpdate;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+}
+
+生成的dao:
+
+import java.util.List;
+import java.util.Map;
+
+public interface AccountMapper {
+    /**
+     * 根据条件统计账户个数
+     *
+     * @param params
+     */
+    int countByMap(Map params);
+
+    /**
+     * 根据条件分页查询账户
+     *
+     * @param params
+     */
+    List<Account> findByMap(Map params);
+
+    /**
+     * 根据主键删除账户
+     *
+     * @param id
+     */
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * 新增账户
+     *
+     * @param record
+     */
+    int insert(Account record);
+
+    /**
+     * 根据主键获取账户
+     *
+     * @param id
+     */
+    Account selectByPrimaryKey(Integer id);
+
+    /**
+     * 根据主键来更新部分账户信息
+     *
+     * @param record
+     */
+    int updateByPrimaryKeySelective(Account record);
+}
+
+生成的Accountmapper.xml为:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smartzhe.dao.AccountMapper">
+  <!--表字段映射--> 
+  <resultMap id="BaseResultMap" type="com.smartzhe.entity.Account">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="timeCreate" jdbcType="TIMESTAMP" property="timeCreate" />
+    <result column="timeUpdate" jdbcType="TIMESTAMP" property="timeUpdate" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+  </resultMap>
+  <!--账户 基础列名--> 
+  <sql id="Base_Column_List">
+    id, name, email, mobile, password, timeCreate, timeUpdate, lastLoginTime
+  </sql>
+  <!--查询条件语句--> 
+  <sql id="Map_Where_Clause">
+    <where>
+      <if test="id != null">
+         and id = #{id}
+      </if>
+      <if test="name != null">
+         and name = #{name}
+      </if>
+      <if test="email != null">
+         and email = #{email}
+      </if>
+      <if test="mobile != null">
+         and mobile = #{mobile}
+      </if>
+      <if test="password != null">
+         and password = #{password}
+      </if>
+      <if test="timeCreate != null">
+         and timeCreate = #{timeCreate}
+      </if>
+      <if test="timeUpdate != null">
+         and timeUpdate = #{timeUpdate}
+      </if>
+      <if test="lastLoginTime != null">
+         and lastLoginTime = #{lastLoginTime}
+      </if>
+    </where>
+  </sql>
+  <!--统计查询账户个数--> 
+  <select id="countByMap" parameterType="map" resultType="Integer">
+    select count(*) 
+    from Account
+    <include refid="Map_Where_Clause" />
+  </select>
+  <!--分页查询账户--> 
+  <select id="findByMap" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Account
+    <include refid="Map_Where_Clause" />
+    <if test="offSet != null and rowsPerPage != null">
+       limit #{offSet} , #{rowsPerPage}
+    </if>
+  </select>
+  <!--通过主键查询账户--> 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Account
+    where id = #{id}
+  </select>
+  <!--通过主键删除账户--> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Account
+    where id = #{id}
+  </delete>
+  <!--新增账户--> 
+  <insert id="insert" keyProperty="id" parameterType="com.smartzhe.entity.Account" useGeneratedKeys="true">
+    insert into Account (name, email, mobile, password, timeCreate, timeUpdate, 
+      lastLoginTime)
+    values (#{name}, #{email}, #{mobile}, #{password}, #{timeCreate}, #{timeUpdate}, 
+      #{lastLoginTime})
+  </insert>
+  <!--通过主键选择性修改账户--> 
+  <update id="updateByPrimaryKeySelective" parameterType="com.smartzhe.entity.Account">
+    update Account
+    <set>
+      <if test="name != null">
+        name = name,
+      </if>
+      <if test="email != null">
+        email = email,
+      </if>
+      <if test="mobile != null">
+        mobile = mobile,
+      </if>
+      <if test="password != null">
+        password = password,
+      </if>
+      <if test="timeCreate != null">
+        timeCreate = timeCreate,
+      </if>
+      <if test="timeUpdate != null">
+        timeUpdate = timeUpdate,
+      </if>
+      <if test="lastLoginTime != null">
+        lastLoginTime = lastLoginTime,
+      </if>
+    </set>
+    where id =  #{id}
+  </update>
+</mapper>
+```

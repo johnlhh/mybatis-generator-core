@@ -341,9 +341,9 @@ public interface AccountMapper {
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.smartzhe.dao.AccountMapper">
+<mapper namespace="com.smartzhe.demo.domain.dao.AccountMapper">
   <!--表字段映射--> 
-  <resultMap id="BaseResultMap" type="com.smartzhe.entity.Account">
+  <resultMap id="BaseResultMap" type="com.smartzhe.demo.domain.entity.Account">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="email" jdbcType="VARCHAR" property="email" />
@@ -387,13 +387,13 @@ public interface AccountMapper {
     </where>
   </sql>
   <!--统计查询账户个数--> 
-  <select id="countByMap" parameterType="map" resultType="Integer">
+  <select id="countByMap" parameterType="java.util.Map" resultType="java.lang.Integer">
     select count(*) 
     from Account
     <include refid="Map_Where_Clause" />
   </select>
   <!--分页查询账户--> 
-  <select id="findByMap" parameterType="map" resultMap="BaseResultMap">
+  <select id="findByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from Account
@@ -415,36 +415,28 @@ public interface AccountMapper {
     where id = #{id}
   </delete>
   <!--新增账户--> 
-  <insert id="insert" keyProperty="id" parameterType="com.smartzhe.entity.Account" useGeneratedKeys="true">
-    insert into Account (name, email, mobile, password, timeCreate, timeUpdate, 
-      lastLoginTime)
-    values (#{name}, #{email}, #{mobile}, #{password}, #{timeCreate}, #{timeUpdate}, 
-      #{lastLoginTime})
+  <insert id="insert" keyProperty="id" parameterType="com.smartzhe.demo.domain.entity.Account" useGeneratedKeys="true">
+    insert into Account (name, email, mobile, password, lastLoginTime)
+    values (#{name}, #{email}, #{mobile}, #{password}, #{lastLoginTime})
   </insert>
   <!--通过主键选择性修改账户--> 
-  <update id="updateByPrimaryKeySelective" parameterType="com.smartzhe.entity.Account">
+  <update id="updateByPrimaryKeySelective" parameterType="com.smartzhe.demo.domain.entity.Account">
     update Account
     <set>
       <if test="name != null">
-        name = name,
+        name = #{name},
       </if>
       <if test="email != null">
-        email = email,
+        email = #{email},
       </if>
       <if test="mobile != null">
-        mobile = mobile,
+        mobile = #{mobile},
       </if>
       <if test="password != null">
-        password = password,
-      </if>
-      <if test="timeCreate != null">
-        timeCreate = timeCreate,
-      </if>
-      <if test="timeUpdate != null">
-        timeUpdate = timeUpdate,
+        password = #{password},
       </if>
       <if test="lastLoginTime != null">
-        lastLoginTime = lastLoginTime,
+        lastLoginTime = #{lastLoginTime},
       </if>
     </set>
     where id =  #{id}

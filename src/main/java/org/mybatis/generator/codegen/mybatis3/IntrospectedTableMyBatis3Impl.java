@@ -260,6 +260,11 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
     /* (non-Javadoc)
      * @see org.mybatis.generator.api.IntrospectedTable#getGeneratedXmlFiles()
      */
+
+    /**
+     * GeneratedXmlFile 构造器的isMergeable为true时，会让内容追加
+     * @return
+     */
     @Override
     public List<GeneratedXmlFile> getGeneratedXmlFiles() {
         List<GeneratedXmlFile> answer = new ArrayList<GeneratedXmlFile>();
@@ -269,7 +274,7 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
             GeneratedXmlFile gxf = new GeneratedXmlFile(document,
                 getMyBatis3XmlMapperFileName(), getMyBatis3XmlMapperPackage(),
                 context.getSqlMapGeneratorConfiguration().getTargetProject(),
-                true, context.getXmlFormatter());
+                false, context.getXmlFormatter());
             if (context.getPlugins().sqlMapGenerated(gxf, this)) {
                 answer.add(gxf);
             }

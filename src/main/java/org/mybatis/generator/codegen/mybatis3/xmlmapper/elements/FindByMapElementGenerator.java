@@ -24,7 +24,7 @@ public class FindByMapElementGenerator extends
         answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
                 introspectedTable.getBaseResultMapId()));
 
-        String parameterType = "map";
+        String parameterType = "java.util.Map";
 
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType));

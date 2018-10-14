@@ -26,6 +26,7 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.codegen.mybatis3.MyBatis3ColumnUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.config.GeneratedKey;
 
@@ -43,13 +44,8 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
         this.isSimple = isSimple;
     }
 
-    public static Set<String> excludeColumns = new HashSet();
 
-    static {
-        excludeColumns.add("id");
-        excludeColumns.add("timeCreated");
-        excludeColumns.add("timeModified");
-    }
+
 
     @Override
     public void addElements(XmlElement parentElement) {
@@ -110,32 +106,18 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
         List<IntrospectedColumn> columns = introspectedTable.getAllColumns();
         for (int i = 0; i < columns.size(); i++) {
             IntrospectedColumn introspectedColumn = columns.get(i);
-            if (introspectedColumn.isIdentity()) {
+            if (MyBatis3ColumnUtilities.isFilterColumn(introspectedColumn)) {
                 // cannot set values on identity fields
                 continue;
             }
-            if(!excludeColumns.contains(introspectedColumn.getActualColumnName())){
-                insertClause.append(introspectedColumn.getActualColumnName());
-                valuesClause.append("#{").append(introspectedColumn.getJavaProperty()).append("}");
-                if (i + 1 < columns.size()) {
-                    if (!columns.get(i + 1).isIdentity()) {
-                        insertClause.append(", "); //$NON-NLS-1$
-                        valuesClause.append(", "); //$NON-NLS-1$
-                    }
-                }
-            }
-
-            /*insertClause.append(MyBatis3FormattingUtilities
-                    .getEscapedColumnName(introspectedColumn));
+            insertClause.append(introspectedColumn.getActualColumnName());
             valuesClause.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
+                    .getParameterClauseClear(introspectedColumn));
             if (i + 1 < columns.size()) {
-                if (!columns.get(i + 1).isIdentity()) {
+
                     insertClause.append(", "); //$NON-NLS-1$
                     valuesClause.append(", "); //$NON-NLS-1$
-                }
-            }*/
-
+            }
             if (valuesClause.length() > 80) {
                 answer.addElement(new TextElement(insertClause.toString()));
                 insertClause.setLength(0);

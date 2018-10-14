@@ -19,6 +19,7 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.codegen.mybatis3.MyBatis3ColumnUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
 import java.util.HashSet;
@@ -75,7 +76,7 @@ public class UpdateByPrimaryKeySelectiveElementGenerator extends
 
         for (IntrospectedColumn introspectedColumn : introspectedTable
                 .getNonPrimaryKeyColumns()) {
-            if (!excludeColumns.contains(introspectedColumn.getActualColumnName())) {
+            if (!MyBatis3ColumnUtilities.isFilterColumn(introspectedColumn)) {
                 XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
                 sb.setLength(0);
                 sb.append(introspectedColumn.getJavaProperty());
@@ -84,15 +85,15 @@ public class UpdateByPrimaryKeySelectiveElementGenerator extends
                 dynamicElement.addElement(isNotNullElement);
 
                 sb.setLength(0);
-            /*sb.append(MyBatis3FormattingUtilities
-                    .getEscapedColumnName(introspectedColumn));*/
-                sb.append(introspectedColumn.getActualColumnName());
+            sb.append(MyBatis3FormattingUtilities
+                    .getEscapedColumnName(introspectedColumn));
+                /*sb.append(introspectedColumn.getActualColumnName());*/
                 sb.append(" = "); //$NON-NLS-1$
-            /*sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
-            sb.append(',');*/
-                sb.append(introspectedColumn.getJavaProperty());
-                sb.append(',');
+            sb.append(MyBatis3FormattingUtilities
+                    .getParameterClauseClear(introspectedColumn));
+            sb.append(',');
+                /*sb.append(introspectedColumn.getJavaProperty());
+                sb.append(',');*/
 
                 isNotNullElement.addElement(new TextElement(sb.toString()));
             }

@@ -96,16 +96,6 @@
             <generatedKey column="id" sqlStatement="Mysql"/>
         </table>
 
-        <table schema="DB2ADMIN" tableName="Blog" domainObjectName="Blog"
-
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"
-        >
-            <property name="useActualColumnNames" value="true"/>
-            <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
-
 
     </context>
 </generatorConfiguration>

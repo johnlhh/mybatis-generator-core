@@ -7,7 +7,7 @@
 
     <!-- <classPathEntry> 加载运行时需要的jar或zip包 完整路径名称或要添加到类路径中的目录 最好放到类路径下，方便统一开发 -->
     <classPathEntry
-            location="C:\\Users\\Administrator\\.m2\\repository\\mysql\\mysql-connector-java\\5.1.44\\mysql-connector-java-5.1.44.jar"/>
+            location="/Users/luohuahua/.m2/repository/mysql/mysql-connector-java/5.1.32/mysql-connector-java-5.1.32.jar"/>
 
     <!-- <context> 元素用于指定生成一组对象的环境。 子元素用于指定要连接到的数据库、
          要生成对象的类型和要内省的表。 多个 <context> 元素可以在 <generatorConfiguration>
@@ -52,9 +52,9 @@
 
         <!-- jdbc数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
-                        userId="test"
-                        password="test">
+                        connectionURL="jdbc:mysql://localhost:3306/test"
+                        userId="root"
+                        password="root">
         </jdbcConnection>
 
 

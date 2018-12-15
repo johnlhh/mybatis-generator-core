@@ -74,6 +74,15 @@ public class MyBatis3FormattingUtilities {
         return sb.toString();
     }
 
+    public static String getParameterClauseClear(
+            IntrospectedColumn introspectedColumn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#{"); //$NON-NLS-1$
+        sb.append(introspectedColumn.getJavaProperty(null));
+        sb.append('}');
+        return sb.toString();
+    }
+
     /**
      * The phrase to use in a select list. If there is a table alias, the value will be
      * "alias.columnName as alias_columnName"

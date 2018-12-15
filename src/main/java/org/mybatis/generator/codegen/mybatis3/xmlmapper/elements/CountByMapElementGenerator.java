@@ -22,9 +22,9 @@ public class CountByMapElementGenerator extends
         answer.addAttribute(new Attribute(
                 "id", "countByMap")); //$NON-NLS-1$
         answer.addAttribute(new Attribute("resultType", //$NON-NLS-1$
-                "Integer"));
+                "java.lang.Integer"));
 
-        String parameterType = "map";
+        String parameterType = "java.util.Map";
 
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType));

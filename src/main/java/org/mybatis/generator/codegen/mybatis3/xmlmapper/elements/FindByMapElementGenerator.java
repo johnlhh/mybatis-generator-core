@@ -46,8 +46,8 @@ public class FindByMapElementGenerator extends
 
 
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "offSet != null and rowsPerPage != null")); //$NON-NLS-1$ //$NON-NLS-2$
-        TextElement textElement = new TextElement(" limit #{offSet} , #{rowsPerPage}");
+        ifElement.addAttribute(new Attribute("test", "offset != null and rowsPerPage != null")); //$NON-NLS-1$ //$NON-NLS-2$
+        TextElement textElement = new TextElement(" limit #{offset} , #{rowsPerPage}");
         ifElement.addElement(textElement);
         answer.addElement(ifElement);
 

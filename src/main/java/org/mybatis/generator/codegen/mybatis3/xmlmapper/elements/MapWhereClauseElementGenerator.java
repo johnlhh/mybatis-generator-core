@@ -32,17 +32,18 @@ public class MapWhereClauseElementGenerator extends AbstractXmlElementGenerator 
         Iterator<IntrospectedColumn> iter = introspectedTable
                 .getNonBLOBColumns().iterator();
         while (iter.hasNext()) {
-            String propertyName = iter.next().getJavaProperty();
+            IntrospectedColumn introspectedColumn = iter.next();
+            String propertyName = introspectedColumn.getJavaProperty();
             XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
             ifElement.addAttribute(new Attribute("test", propertyName + " != null")); //$NON-NLS-1$ //$NON-NLS-2$
-            TextElement textElement = new TextElement(" and " + propertyName + " = #{" + propertyName + "}");
+            TextElement textElement = new TextElement(" and " + introspectedColumn.getActualColumnName() + " = #{" + propertyName + "}");
             ifElement.addElement(textElement);
             whereElement.addElement(ifElement);
         }
         parentElement.addElement(answer);
     }
 
-    private void addComment(XmlElement parentElement){
+    private void addComment(XmlElement parentElement) {
         StringBuilder sb = new StringBuilder();
         sb.append("<!--")
                 .append("查询条件语句")

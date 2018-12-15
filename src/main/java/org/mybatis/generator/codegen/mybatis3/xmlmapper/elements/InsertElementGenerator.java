@@ -146,6 +146,12 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
                 OutputUtilities.xmlIndent(valuesClause, 1);
             }
         }
+        if(insertClause.lastIndexOf(",") == insertClause.length()-1){
+            insertClause.deleteCharAt(insertClause.length()-1);
+        }
+        if(valuesClause.lastIndexOf(",") == valuesClause.length()-1){
+            valuesClause.deleteCharAt(valuesClause.length()-1);
+        }
 
         insertClause.append(')');
         answer.addElement(new TextElement(insertClause.toString()));

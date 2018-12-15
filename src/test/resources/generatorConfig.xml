@@ -7,7 +7,7 @@
 
     <!-- <classPathEntry> 加载运行时需要的jar或zip包 完整路径名称或要添加到类路径中的目录 最好放到类路径下，方便统一开发 -->
     <classPathEntry
-            location="/Users/luohuahua/.m2/repository/mysql/mysql-connector-java/5.1.32/mysql-connector-java-5.1.32.jar"/>
+            location="C:\\Users\\Administrator\\.m2\\repository\\mysql\\mysql-connector-java\\5.1.44\\mysql-connector-java-5.1.44.jar"/>
 
     <!-- <context> 元素用于指定生成一组对象的环境。 子元素用于指定要连接到的数据库、
          要生成对象的类型和要内省的表。 多个 <context> 元素可以在 <generatorConfiguration>
@@ -52,9 +52,9 @@
 
         <!-- jdbc数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/test"
-                        userId="root"
-                        password="root">
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
+                        userId="test"
+                        password="test">
         </jdbcConnection>
 
 
@@ -71,40 +71,37 @@
         </javaTypeResolver>
 
 
-        <javaModelGenerator targetPackage="com.smartzhe.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.test.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <!--<property name="trimStrings" value="true"/>-->
             <!-- 实体类是否需要生成构造器 -->
             <property name="constructorBased" value="false"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis.mapper" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.smartzhe.dao" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="DB2ADMIN" tableName="Account" domainObjectName="Account"
+
+        <table schema="DB2ADMIN" tableName="ServicePlus" domainObjectName="ServicePlus"
 
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"
         >
-            <property name="useActualColumnNames" value="true"/>
+            <!-- 默认驼峰 -->
+            <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql"/>
+            <!-- 字段如果是驼峰的 则需要覆盖 -->
+            <columnOverride column="iconId" property="iconId">
+
+            </columnOverride>
         </table>
 
-        <table schema="DB2ADMIN" tableName="Blog" domainObjectName="Blog"
-
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"
-        >
-            <property name="useActualColumnNames" value="true"/>
-            <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
 
 
     </context>

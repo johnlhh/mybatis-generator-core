@@ -88,10 +88,12 @@ public class UpdateByPrimaryKeySelectiveElementGenerator extends
                     .getEscapedColumnName(introspectedColumn));*/
                 sb.append(introspectedColumn.getActualColumnName());
                 sb.append(" = "); //$NON-NLS-1$
-            /*sb.append(MyBatis3FormattingUtilities
+           /* sb.append(MyBatis3FormattingUtilities
                     .getParameterClause(introspectedColumn));
             sb.append(',');*/
+                sb.append("#{");
                 sb.append(introspectedColumn.getJavaProperty());
+                sb.append("}");
                 sb.append(',');
 
                 isNotNullElement.addElement(new TextElement(sb.toString()));
